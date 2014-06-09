@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <bioskey.h>
 #include <graphics.h>
 #include <dos.h>
 
@@ -16,31 +15,30 @@
 #define WEAPON 0x1e
 
 #define PAINT paint(option[interface], point, player, &bout, winner)
-#define PI 3.14159
 
 typedef struct {                /*结构定义*/
-    char have;
+    int have;
     unsigned long color;
 }POINT;
 typedef struct {
-    char hp;
-    char weapon;
-    char weaponNum[4];
+    int hp;
+    int weapon;
+    int weaponNum[4];
     int x, y;
     int xaim, yaim;
-    char face;
+    int face;
     double angle;
 }PLAYER;
 typedef struct {
-    char boutNum;
-    char playerNum;
-    char strenth;
-    char wind;
+    int boutNum;
+    int playerNum;
+    int strenth;
+    int wind;
 }BOUT;
 
 int key;
 int second = 45;                /*倒计时*/
-char interface = 0;             /*界面标号*/
+int interface = 0;             /*界面标号*/
 
 /*中断函数*/
 void install(void interrupt (*interruptVect)(void), int interruptNum);
@@ -55,7 +53,7 @@ void move(POINT (*point)[1024], PLAYER *player, BOUT *pbout);
 void jump(POINT (*point)[1024], PLAYER *player, BOUT *pbout);
 
 /*写屏函数*/
-void paint(char option, POINT (*point)[1024], PLAYER *player, BOUT *pbout, char winner);
+void paint(int option, POINT (*point)[1024], PLAYER *player, BOUT *pbout, int winner);
 
 void paint00(void);
 void paint01(void);
@@ -64,14 +62,14 @@ void paint03(void);
 
 void paint10(POINT (*point)[1024], PLAYER *player, BOUT *pbout);
 
-void paint20(char *weaponNum);
-void paint21(char *weaponNum);
-void paint22(char *weaponNum);
-void paint23(char *weaponNum);
-void paint24(char *weaponNum);
-void paint25(char *weaponNum);
-void paint26(char *weaponNum);
-void paint27(char *weaponNum);
+void paint20(int *weaponNum);
+void paint21(int *weaponNum);
+void paint22(int *weaponNum);
+void paint23(int *weaponNum);
+void paint24(int *weaponNum);
+void paint25(int *weaponNum);
+void paint26(int *weaponNum);
+void paint27(int *weaponNum);
 
 void paint30(void);
 void paint31(void);
@@ -79,9 +77,9 @@ void paint32(void);
 void paint33(void);
 void paint34(void);
 
-void paint40(char winner);
-void paint41(char winner);
-void paint42(char winner);
+void paint40(int winner);
+void paint41(int winner);
+void paint42(int winner);
 
 void paint50(void);
 
@@ -92,20 +90,20 @@ void paint71(void);
 
 int main(void)
 {
-    char interfaceTemp, option[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-    char star = 0, over = 0, quit = 0;
+    int interfaceTemp, option[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    int star = 0, over = 0, quit = 0;
 
     int driver = 0, mode = VESA_1024x768x32bit;
     POINT point[768][1024];
 
     PLAYER player[2];
-    char winner;
+    int winner;
     BOUT bout;
-    char space = 0;
+    int space = 0;
 
     void interrupt (*old8h)(void);
     void interrupt (*old9h)(void);
-    
+
     old8h = getvect(8);
     old9h = getvect(9);
     install(int8h, 8);
@@ -252,7 +250,7 @@ int main(void)
                                 PAINT;
                                 break;
                             case 4:														//transmit
-                                player[bout.playerNum].weaponNum[3]--;						
+                                player[bout.playerNum].weaponNum[3]--;
                                 player[bout.playerNum].x = player[bout.playerNum].xaim;
                                 player[bout.playerNum].y = player[bout.playerNum].yaim;
                                 PAINT;
@@ -511,7 +509,7 @@ int main(void)
 }
 
 /*选择写屏函数*/
-void paint(char option, POINT (*point)[1024], PLAYER *player, BOUT *pbout, char winner)
+void paint(int option, POINT (*point)[1024], PLAYER *player, BOUT *pbout, int winner)
 {
     switch (interface) {
         case 0:
@@ -575,7 +573,7 @@ void paint(char option, POINT (*point)[1024], PLAYER *player, BOUT *pbout, char 
                     paint33();
                     break;
                 case 4:
-                    paint43();
+                    paint34();
                     break;
             }
             break;
@@ -677,7 +675,7 @@ void initialize(POINT (*point)[1024], PLAYER *player, BOUT *pbout)
         player[i].angle = 0;
     }
     pbout->boutNum = 1;
-    pbout->bout.playerNum = 0;
+    pbout->playerNum = 0;
     pbout->wind = rand()%101-50;
 }
 
@@ -686,12 +684,12 @@ void paint10(POINT (*point)[1024], PLAYER *player, BOUT *pbout)
 {
     int xdirection, ydirection;
 
-    if (face == 0) {                    /*准星坐标计算*/
-        xdirection = player[bout.playerNum].x-100*cos(player[bout.playerNum].angle);
-        ydirection = player[bout.playerNum].y-100*sin(player[bout.playerNum].angle);
+    if (player[pbout->playerNum].face == 0) {                    /*准星坐标计算*/
+        xdirection = player[pbout->playerNum].x-100*cos(player[pbout->playerNum].angle);
+        ydirection = player[pbout->playerNum].y-100*sin(player[pbout->playerNum].angle);
     }
     else {
-        xdirection = player[bout.playerNum].x+100*cos(player[bout.playerNum].angle);
-        ydirection = player[bout.playerNum].y-100*sin(player[bout.playerNum].angle);
+        xdirection = player[pbout->playerNum].x+100*cos(player[pbout->playerNum].angle);
+        ydirection = player[pbout->playerNum].y-100*sin(player[pbout->playerNum].angle);
     }
 }
