@@ -1,4 +1,4 @@
-#include <graphics.h>
+#include "var.h"
 
 void clear_display(void)
 {

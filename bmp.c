@@ -1,21 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <graphics.h>
-#include <io.h>
-
-typedef struct _RGB
-{
-    byte red, green, blue;
-} RGB;
-
-int  build_pic_from_bmp(char *dir, PIC ppic[]);
-void build_this_pic(char *filename, PIC *p);
-long get_file_len(FILE *fp);
-void get_palette_from_bmp(char *filename, RGB palette[]);
-void set_palette(RGB palette[]);
-
-extern int pictures;
-extern PIC pic[100];
+#include "var.h"
 
 int  build_pic_from_bmp(char *dir, PIC ppic[])
 {

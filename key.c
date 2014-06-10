@@ -1,7 +1,4 @@
-#include <graphics.h>
-
-extern int key[256];
-extern int stop;
+#include "var.h"
 
 void interrupt int_9h(void)
 {

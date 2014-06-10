@@ -1,8 +1,4 @@
-#define TICKVARS 10
-volatile word *ptickvar[TICKVARS]={NULL};
-volatile word max_ticks[TICKVARS]={0};
-volatile word interval[TICKVARS]={0};
-volatile word max_interval[TICKVARS]={0};
+#include "var.h"
 
 void interrupt int_8h(void)
 {
