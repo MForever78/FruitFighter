@@ -1,6 +1,11 @@
+#include <graphics.h>
+
+extern int key[256];
+extern int stop;
+
 void interrupt int_9h(void)
 {
-   byte k;
+   int k;
    k = inportb(0x60);
    if(k != 0xE0 && k != 0xE1) // 0xE0 and 0xE1 are prefixing key codes
    {
