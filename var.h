@@ -5,27 +5,77 @@
 #include <stdlib.h>
 #include <graphics.h>
 #include <io.h>
+#include <math.h>
+
+//game struct
+typedef struct _PLAYER {
+	int x, y, hp, face;
+} PLAYER;
+
+typedef struct _BOUT {
+	int playerNum;
+} BOUT;
+
+typedef struct _BULLET {
+	int x, y, xspeed, yspeed, angle, strenth, time, face;
+} BULLET;
+
+//keyboard definition
+#define NUM_1		2
+#define NUM_2		3
+#define NUM_3		4
+#define _SPACE		0x39
 
 //game variables
 int stop = 0;
+int interface = 0;				//default welcome interface
+int interface_changed = 1;		//default changed in order to draw welcome interface at the begining
+int new_game = 1;				//default regard as a new game so that init functions can be trigered
+int map[1025][769] = {1};		//1:filled, 0:empty
+int aiming = 0;
+int shooting = 0;
+int exploding = 0;
+int explode_state = 0;
+BULLET bullet;
+BOUT bout;
+PLAYER player[2];
+
+#define STILL		0
+#define MOVE 		1
+#define GRAV		5
+#define MAXSTRENTH	50
+#define RAID		20
+#define BASICHURT	100
+#define PLAYEROFFSET	300
+
 
 //bmp variables
 int pictures = 0;
-RGB game_palette[256];
+RGB game_palette[100][256];
 PIC pic[100];
-#define AWEL         0
-#define BGAME        1
-#define CPAUSE       2
-#define DWIN1        3
-#define DWIN2        4
+#define AWEL		0
+#define BGAME       1
+#define BMOUNT		10
+#define BULLET0		11
+#define CPAUSE      2
+#define DWIN1       3
+#define DWIN2       4
+#define EXPLO0		10
+#define HELP 		10
+#define WORM00		10
+#define WORM01 		10
+#define WORM10 		10
+#define WORM11		10
+
 
 //key variables
 int key[256];
+int anykey = 0;
 
 //timer variables
 volatile int frame_count, fps;
 volatile word game_time, retrace_count;
-
+word prev_update_time;
 InterruptFunctionPointer old_8h, old_9h;
 #define TICKVARS 10
 volatile word *ptickvar[TICKVARS]={NULL};
@@ -44,6 +94,19 @@ void clear_picture(struct picture *p);
 struct picture * build_mask_from_pic(struct picture *p);
 void destroy_pictures(void);
 struct picture * create_picture(int w, int h);
+
+//paint function
+void draw_interface();
+void draw_bullet();
+void draw_explode();
+void draw_player(int index, int moving);
+
+//control function
+void welcome_control();
+void help_control();
+void round_move();
+void bullet_flying();
+void bullet_explode();
 
 //timer function
 void interrupt int_8h(void);

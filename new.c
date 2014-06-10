@@ -3,7 +3,6 @@
 int main()
 {
     int driver=DETECT, mode=VESA_1024x768x8bit;
-    word prev_update_time;
     initgraph(&driver, &mode, "");
     pictures = build_pic_from_bmp("bmp", pic);
     set_timer_frequency(1193180/1000);
@@ -15,9 +14,34 @@ int main()
     install_tickvar(&retrace_count, 6400/_height, 32);
 
     clear_display();
-    draw_picture(pic[AWEL], 0, 0);
 
-    while(!stop){}
+    while(!stop){
+        if (interface_changed) {
+            draw_interface(interface);
+            interface_changed = 0;
+        }
+
+        if (interface == 0) {
+            welcome_control();
+            continue;
+        }
+        if (interface == 1) {
+            if (shooting){
+                bullet_flying();
+                continue;
+            }
+            if (exploding){
+                bullet_explode();
+                continue;
+            }
+            round_move();
+            continue;
+        }
+        if (interface == 2) {
+            help_control();
+            continue;
+        }
+    }
 
     setvect(8, old_8h);
     setvect(9, old_9h);

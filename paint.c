@@ -32,3 +32,39 @@ void draw_interface(int interface)
 			break;
 	}
 }
+
+void draw_player(int index, int moving)
+{
+	PIC worm;
+	if (index == 0) {
+		if (moving) {
+			worm = pic[WORM01];
+			set_palette(game_palette[WORM01]);
+		} else {
+			worm = pic[WORM00];
+			set_palette(game_palette[WORM00]);
+		}
+	} else {
+		if (moving) {
+			worm = pic[WORM11];
+			set_palette(game_palette[WORM11]);
+		} else {
+			worm = pic[WORM10];
+			set_palette(game_palette[WORM10]);
+		}
+	}
+	putimage(player[index].x - worm.mask->picwidth / 2, player[index].y - worm.mask->picheight, worm.mask, AND_PUT);
+	putimage(player[index].x - worm.img->picwidth / 2, player[index].y - worm.img->picheight, worm.img, OR_PUT);
+}
+
+void draw_bullet()
+{
+	set_palette(game_palette[BULLET0]);
+	draw_picture(pic[BULLET0], bullet.x, bullet.y);
+}
+
+void draw_explode()
+{
+	set_palette(game_palette[EXPLO0 + explode_state]);
+	draw_picture(pic[EXPLO0 + explode_state], bullet.x, bullet.y);	
+}
