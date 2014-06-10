@@ -1,3 +1,5 @@
+#include <graphics.h>
+
 void clear_display(void)
 {
    setvisualpage(1);
