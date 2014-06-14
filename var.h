@@ -36,6 +36,7 @@ int aiming = 0;
 int shooting = 0;
 int exploding = 0;
 int explode_state = 0;
+int need_draw = 0;
 BULLET bullet;
 BOUT bout;
 PLAYER player[2];
@@ -55,16 +56,16 @@ RGB game_palette[100][256];
 PIC pic[100];
 #define AWEL		0
 #define BGAME       1
-#define BMOUNT		10
-#define BULLET0		11
-#define CPAUSE      2
-#define DWIN1       3
-#define DWIN2       4
-#define EXPLO0		10
-#define HELP 		10
-#define WORM00		10
-#define WORM01 		10
-#define WORM10 		10
+#define BMOUNT		2
+#define BULLET0		3
+#define CPAUSE      4
+#define DWIN1       5
+#define DWIN2       6
+#define EXPLO0		12
+#define HELP 		12
+#define WORM00		7
+#define WORM01 		8
+#define WORM10 		9
 #define WORM11		10
 
 

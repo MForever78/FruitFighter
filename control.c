@@ -164,7 +164,6 @@ void init_player()
 				break;
 			}
 		}
-		draw_player(i, STILL);
 	}
 
 }

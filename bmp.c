@@ -58,7 +58,7 @@ void build_this_pic(char *filename, PIC *p)
       if(*q != 0)
          *q = 0;
       else
-         *q = 0x00;
+         *q = 0xFF;
       q++;
    }
    free(pbuf);
@@ -140,7 +140,7 @@ struct picture * build_mask_from_pic(struct picture *p)
       if(*pdot != 0)
          *pdot = 0;
       else
-         *pdot = 0x00;
+         *pdot = 0xFF;
       pdot++;
    }
    return q;

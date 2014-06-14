@@ -17,7 +17,9 @@ int main()
 
     while(!stop){
         if (interface_changed) {
+            prepare_display();
             draw_interface(interface);
+            flip_display();
             interface_changed = 0;
         }
 
@@ -26,15 +28,29 @@ int main()
             continue;
         }
         if (interface == 1) {
-            if (shooting){
-                bullet_flying();
-                continue;
+            need_draw = 0;
+            while (prev_update_time < game_time) {
+                round_move();
+                prev_update_time++;
+                need_draw = 1;
             }
-            if (exploding){
-                bullet_explode();
-                continue;
+            if (need_draw) { 
+                prepare_display();
+                draw_interface(1);
+                draw_player(0, STILL);
+                draw_player(1, STILL);
+                if (shooting){
+                    bullet_flying();
+                    // interface = 0;
+                    // interface_changed = 1;
+                    continue;
+                }
+                if (exploding){
+                    bullet_explode();
+                    continue;
+                }
+                flip_display();
             }
-            round_move();
             continue;
         }
         if (interface == 2) {

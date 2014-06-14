@@ -2,17 +2,18 @@
 
 void draw_interface(int interface)
 {
-	clear_display();
 	switch (interface) {
 		case 0:	//welcome interface
 			set_palette(game_palette[AWEL]);
 			draw_picture(pic[AWEL], 0, 0);
 			break;
 		case 1: //game interface
-			set_palette(game_palette[BGAME]);
+			if (interface_changed) {
+				set_palette(game_palette[BGAME]);
+			}
 			draw_picture(pic[BGAME], 0, 0);
-			set_palette(game_palette[BMOUNT]);
-			draw_picture(pic[BMOUNT], 0, 0);
+			// set_palette(game_palette[BMOUNT]);
+			// draw_picture(pic[BMOUNT], 0, 0);
 			break;
 		case 2: //help interface
 			set_palette(game_palette[HELP]);
@@ -42,7 +43,7 @@ void draw_player(int index, int moving)
 			set_palette(game_palette[WORM01]);
 		} else {
 			worm = pic[WORM00];
-			set_palette(game_palette[WORM00]);
+			// set_palette(game_palette[WORM00]);
 		}
 	} else {
 		if (moving) {
@@ -50,7 +51,7 @@ void draw_player(int index, int moving)
 			set_palette(game_palette[WORM11]);
 		} else {
 			worm = pic[WORM10];
-			set_palette(game_palette[WORM10]);
+			// set_palette(game_palette[WORM10]);
 		}
 	}
 	putimage(player[index].x - worm.mask->picwidth / 2, player[index].y - worm.mask->picheight, worm.mask, AND_PUT);
