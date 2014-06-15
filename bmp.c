@@ -15,7 +15,7 @@ int  build_pic_from_bmp(char *dir, PIC ppic[])
    {
       sprintf(filename, "bmp\\%s", fileinfo.name);
       build_this_pic(filename, &ppic[i]);
-      get_palette_from_bmp(filename, game_palette[i]);
+      // get_palette_from_bmp(filename, game_palette[i]);
       h = _findnext(handle, &fileinfo);
       i++;
    }
@@ -28,6 +28,7 @@ void build_this_pic(char *filename, PIC *p)
    FILE *fp;
    long len;
    byte *pbuf, *q;
+   long *color;
    dword bmp_data_offset;
    int width, height, bytes_per_line, i;
    fp = fopen(filename, "rb");
@@ -38,7 +39,7 @@ void build_this_pic(char *filename, PIC *p)
    width = *(dword *)(pbuf+0x12);
    height = *(dword *)(pbuf+0x16);
    bmp_data_offset = *(dword *)(pbuf+0x0A);
-   bytes_per_line = (width + 3) / 4 * 4;
+   bytes_per_line = (width + 3) * 3 / 4 * 4;
    p->mask = malloc(imagesize(0, 0, width-1, height-1));
    p->img = malloc(imagesize(0, 0, width-1, height-1));
    p->mask->picwidth = width;
@@ -48,58 +49,22 @@ void build_this_pic(char *filename, PIC *p)
    q = &p->img->buffer;
    for(i=height-1; i>=0; i--)
    {
-      memcpy(q, pbuf+bmp_data_offset+i*bytes_per_line, width);
-      q += width;
+      memcpy(q, pbuf+bmp_data_offset+i*bytes_per_line, width * 3);
+      q += width * 3;
    }
-   memcpy(&p->mask->buffer, &p->img->buffer, width*height);
+   memcpy(&p->mask->buffer, &p->img->buffer, width*height*3);
    q = &p->mask->buffer;
-   for(i=0; i<width*height; i++)
+   for(i=0; i<width*height*3; i++)
    {
-      if(*q != 0)
-         *q = 0;
-      else
-         *q = 0xFF;
-      q++;
+      color = (long *)q;
+      if (*color & 0xFFFFFF00 != 0xFFFFFF00) {
+         *color |= 0xFFFFFF00;
+      } else {
+         *color &= 0x000000FF;
+      }
+      q += 3;
    }
    free(pbuf);
-}
-
-void get_palette_from_bmp(char *filename, RGB palette[])
-{
-   FILE *fp;
-   long len;
-   byte *p;
-   int i;
-   BMP_PALETTE *pbmp_pal;
-   fp = fopen(filename, "rb");
-   if(fp == NULL)
-      return;
-   fseek(fp, 0, SEEK_END);
-   len = ftell(fp);
-   fseek(fp, 0, SEEK_SET);
-   p = malloc(len);
-   fread(p, 1, len, fp);
-   fclose(fp);
-   pbmp_pal = (BMP_PALETTE *)(p+0x36);
-   for(i=0; i<256; i++)
-   {
-      palette[i].red = pbmp_pal[i].red >> 2;
-      palette[i].green = pbmp_pal[i].green >> 2;
-      palette[i].blue = pbmp_pal[i].blue >> 2;
-   }
-   free(p);
-}
-
-void set_palette(RGB palette[])
-{
-   int i;
-   for(i=0; i<256; i++)
-   {
-      outportb(0x3C8, i);
-      outportb(0x3C9, palette[i].red);
-      outportb(0x3C9, palette[i].green);
-      outportb(0x3C9, palette[i].blue);
-   }
 }
 
 long get_file_len(FILE *fp)
@@ -114,36 +79,13 @@ long get_file_len(FILE *fp)
 void draw_picture(PIC p, int x, int y)
 {
    if(x<0 || y < 0 || x>=_width || y>=_height) return;
-   putimage(x, y, p.mask, AND_PUT);
-   putimage(x, y, p.img, OR_PUT);
+   putimage(x, y, p.mask, OR_PUT);
+   putimage(x, y, p.img, AND_PUT);
 }
 
 void clear_picture(struct picture *p)
 {
-   memset(&p->buffer, 0, p->picwidth * p->picheight);
-}
-
-struct picture * build_mask_from_pic(struct picture *p)
-{
-   struct picture *q;
-   int w, h, i;
-   byte *pdot;
-   w = p->picwidth;
-   h = p->picheight;
-   q = malloc(imagesize(0, 0, w-1, h-1));
-   q->picwidth = w;
-   q->picheight = h;
-   memcpy(&q->buffer, &p->buffer, w*h);
-   pdot = &q->buffer;
-   for(i=0; i<w*h; i++)
-   {
-      if(*pdot != 0)
-         *pdot = 0;
-      else
-         *pdot = 0xFF;
-      pdot++;
-   }
-   return q;
+   memset(&p->buffer, 0, p->picwidth * p->picheight * 3);
 }
 
 void destroy_pictures(void)
@@ -154,13 +96,4 @@ void destroy_pictures(void)
       free(pic[c].img);
       free(pic[c].mask);
    }
-}
-
-struct picture * create_picture(int w, int h)
-{
-   struct picture *p;
-   p = malloc(imagesize(0, 0, w-1, h-1));
-   p->picwidth = w;
-   p->picheight = h;
-   return p;
 }
