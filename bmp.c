@@ -15,7 +15,6 @@ int  build_pic_from_bmp(char *dir, PIC ppic[])
    {
       sprintf(filename, "bmp\\%s", fileinfo.name);
       build_this_pic(filename, &ppic[i]);
-      // get_palette_from_bmp(filename, game_palette[i]);
       h = _findnext(handle, &fileinfo);
       i++;
    }
@@ -39,9 +38,9 @@ void build_this_pic(char *filename, PIC *p)
    width = *(dword *)(pbuf+0x12);
    height = *(dword *)(pbuf+0x16);
    bmp_data_offset = *(dword *)(pbuf+0x0A);
-   bytes_per_line = (width + 3) * 3 / 4 * 4;
-   p->mask = malloc(imagesize(0, 0, width-1, height-1) * 3);
-   p->img = malloc(imagesize(0, 0, width-1, height-1) * 3);
+   bytes_per_line = (width * 3 + 3) / 4 * 4;
+   p->mask = malloc(imagesize(0, 0, width-1, height-1));
+   p->img = malloc(imagesize(0, 0, width-1, height-1));
    p->mask->picwidth = width;
    p->mask->picheight = height;
    p->img->picwidth = width;
@@ -54,10 +53,10 @@ void build_this_pic(char *filename, PIC *p)
    }
    memcpy(&p->mask->buffer, &p->img->buffer, width*height*3);
    q = &p->mask->buffer;
-   for(i=0; i<width*height*3; i++)
+   for(i=0; i<width*height; i++)
    {
       color = (long *)q;
-      if (*color & 0xFFFFFF00 != 0xFFFFFF00) {
+      if ((*color & 0xFFFFFF00) != 0xFFFFFF00) {
          *color |= 0xFFFFFF00;
       } else {
          *color &= 0x000000FF;
