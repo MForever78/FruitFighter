@@ -41,8 +41,7 @@ void draw_player(int index, int moving)
 			worm = pic[WORM10];
 		}
 	}
-	putimage(player[index].x - worm.mask->picwidth / 2, player[index].y - worm.mask->picheight, worm.mask, AND_PUT);
-	putimage(player[index].x - worm.img->picwidth / 2, player[index].y - worm.img->picheight, worm.img, OR_PUT);
+	draw_picture(worm, player[index].x - worm.mask->picwidth / 2, player[index].y - worm.mask->picheight);
 }
 
 void draw_bullet()
