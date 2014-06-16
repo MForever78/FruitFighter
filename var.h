@@ -88,13 +88,13 @@ volatile word max_interval[TICKVARS]={0};
 int  build_pic_from_bmp(char *dir, PIC ppic[]);
 void build_this_pic(char *filename, PIC *p);
 long get_file_len(FILE *fp);
-void get_palette_from_bmp(char *filename, RGB palette[]);
-void set_palette(RGB palette[]);
+// void get_palette_from_bmp(char *filename, RGB palette[]);
+// void set_palette(RGB palette[]);
 void draw_picture(PIC p, int x, int y);
 void clear_picture(struct picture *p);
-struct picture * build_mask_from_pic(struct picture *p);
+// struct picture * build_mask_from_pic(struct picture *p);
 void destroy_pictures(void);
-struct picture * create_picture(int w, int h);
+// struct picture * create_picture(int w, int h);
 
 //paint function
 void draw_interface();

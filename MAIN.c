@@ -2,9 +2,10 @@
 
 int main()
 {
-    int driver=DETECT, mode=VESA_1024x768x8bit;
+    int driver=DETECT, mode=VESA_1024x768x24bit;
     initgraph(&driver, &mode, "");
     pictures = build_pic_from_bmp("bmp", pic);
+    while(!stop){};
     set_timer_frequency(1193180/1000);
     old_8h = getvect(8);
     old_9h = getvect(9);
@@ -16,7 +17,7 @@ int main()
     clear_display();
 
     while(!stop){
-        if (interface_changed) {
+/*        if (interface_changed) {
             prepare_display();
             draw_interface(interface);
             flip_display();
@@ -56,7 +57,7 @@ int main()
         if (interface == 2) {
             help_control();
             continue;
-        }
+        }*/
     }
 
     setvect(8, old_8h);

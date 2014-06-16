@@ -40,8 +40,8 @@ void build_this_pic(char *filename, PIC *p)
    height = *(dword *)(pbuf+0x16);
    bmp_data_offset = *(dword *)(pbuf+0x0A);
    bytes_per_line = (width + 3) * 3 / 4 * 4;
-   p->mask = malloc(imagesize(0, 0, width-1, height-1));
-   p->img = malloc(imagesize(0, 0, width-1, height-1));
+   p->mask = malloc(imagesize(0, 0, width-1, height-1) * 3);
+   p->img = malloc(imagesize(0, 0, width-1, height-1) * 3);
    p->mask->picwidth = width;
    p->mask->picheight = height;
    p->img->picwidth = width;
