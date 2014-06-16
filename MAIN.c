@@ -1,11 +1,45 @@
 #include "var.h"
 
+//game variables
+int stop = 0;
+int interface = 0;               //default welcome interface
+int interface_changed = 1;       //default changed in order to draw welcome interface at the begining
+int new_game = 1;                //default regard as a new game so that init functions can be trigered
+int map[1025][769] = {1};        //1:filled, 0:empty
+int aiming = 0;
+int shooting = 0;
+int exploding = 0;
+int explode_state = 0;
+int need_draw = 0;
+BULLET bullet;
+BOUT bout;
+PLAYER player[2];
+
+//bmp variables
+int pictures = 0;
+PIC pic[100];
+
+
+//key variables
+int key[256];
+int anykey = 0;
+
+
+//timer variables
+volatile int frame_count, fps;
+volatile word game_time, retrace_count;
+word prev_update_time;
+InterruptFunctionPointer old_8h, old_9h;
+volatile word *ptickvar[TICKVARS]={NULL};
+volatile word max_ticks[TICKVARS]={0};
+volatile word interval[TICKVARS]={0};
+volatile word max_interval[TICKVARS]={0};
+
 int main()
 {
     int driver=DETECT, mode=VESA_1024x768x24bit;
     initgraph(&driver, &mode, "");
     pictures = build_pic_from_bmp("bmp", pic);
-    while(!stop){};
     set_timer_frequency(1193180/1000);
     old_8h = getvect(8);
     old_9h = getvect(9);
