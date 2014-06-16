@@ -4,6 +4,7 @@ void init_player();
 void init_round();
 void init_time();
 void cal_hurt();
+void build_map();
 
 /*
 ** use num 1, 2, 3 to choose interface
@@ -38,6 +39,7 @@ void round_move()
 	int i, index;
 
 	if (new_game) {
+		build_map();
 		init_player();
 		init_round(0);
 		init_time();
@@ -158,8 +160,8 @@ void init_player()
 	for (i = 0; i < 2; i++) {
 		player[i].hp = 100;
 		player[i].face = 1 - i;		//0 is left, 1 is right
-		for (j = _height; j > 0; j--){
-			if (map[player[i].x][j]) {
+		for (j = 0; j < _height; j++){
+			if (!map[player[i].x][j]) {
 				player[i].y = j;
 				break;
 			}
@@ -178,4 +180,23 @@ void init_time()
 {
 	game_time = 0;
 	prev_update_time = 0;
+}
+
+void build_map()
+{
+	PIC *p = &pic[BMOUNT];
+	int i, width, height;
+	long *color;
+	byte *q;
+
+	q = &p->img->buffer;
+	for (i = 0; i < p->img->picwidth * p->img->picheight; i++) {
+		color = (long *)q;
+		if ((*color & 0xFFFFFF00) == 0xFFFFFF00) {
+			height = i / p->img->picwidth;
+			width = i % p->img->picwidth;
+			map[width][height] = 1;
+		}
+		q += 3;
+	}
 }
