@@ -51,7 +51,7 @@ int main()
     clear_display();
 
     while(!stop){
-/*        if (interface_changed) {
+        if (interface_changed) {
             prepare_display();
             draw_interface(interface);
             flip_display();
@@ -91,7 +91,7 @@ int main()
         if (interface == 2) {
             help_control();
             continue;
-        }*/
+        }
     }
 
     setvect(8, old_8h);
