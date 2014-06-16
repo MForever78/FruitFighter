@@ -27,19 +27,19 @@ typedef struct _BULLET {
 #define _SPACE		0x39
 
 //game variables
-int stop = 0;
-int interface = 0;				//default welcome interface
-int interface_changed = 1;		//default changed in order to draw welcome interface at the begining
-int new_game = 1;				//default regard as a new game so that init functions can be trigered
-int map[1025][769] = {1};		//1:filled, 0:empty
-int aiming = 0;
-int shooting = 0;
-int exploding = 0;
-int explode_state = 0;
-int need_draw = 0;
-BULLET bullet;
-BOUT bout;
-PLAYER player[2];
+extern int stop;
+extern int interface;				//default welcome interface
+extern int interface_changed;		//default changed in order to draw welcome interface at the begining
+extern int new_game;				//default regard as a new game so that init functions can be trigered
+extern int map[1025][769];		//1:filled, 0:empty
+extern int aiming;
+extern int shooting;
+extern int exploding;
+extern int explode_state;
+extern int need_draw;
+extern BULLET bullet;
+extern BOUT bout;
+extern PLAYER player[2];
 
 #define STILL		0
 #define MOVE 		1
@@ -51,16 +51,15 @@ PLAYER player[2];
 
 
 //bmp variables
-int pictures = 0;
-RGB game_palette[100][256];
-PIC pic[100];
+extern int pictures;
+extern PIC pic[100];
 #define AWEL		0
-#define BGAME       1
+#define BGAME		1
 #define BMOUNT		2
 #define BULLET0		3
-#define CPAUSE      4
-#define DWIN1       5
-#define DWIN2       6
+#define CPAUSE		4
+#define DWIN1		5
+#define DWIN2		6
 #define EXPLO0		12
 #define HELP 		12
 #define WORM00		7
@@ -70,31 +69,27 @@ PIC pic[100];
 
 
 //key variables
-int key[256];
-int anykey = 0;
+extern int key[256];
+extern int anykey;
 
 //timer variables
-volatile int frame_count, fps;
-volatile word game_time, retrace_count;
-word prev_update_time;
-InterruptFunctionPointer old_8h, old_9h;
+extern volatile int frame_count, fps;
+extern volatile word game_time, retrace_count;
+extern word prev_update_time;
+extern InterruptFunctionPointer old_8h, old_9h;
 #define TICKVARS 10
-volatile word *ptickvar[TICKVARS]={NULL};
-volatile word max_ticks[TICKVARS]={0};
-volatile word interval[TICKVARS]={0};
-volatile word max_interval[TICKVARS]={0};
+extern volatile word *ptickvar[TICKVARS];
+extern volatile word max_ticks[TICKVARS];
+extern volatile word interval[TICKVARS];
+extern volatile word max_interval[TICKVARS];
 
 //bmp function
 int  build_pic_from_bmp(char *dir, PIC ppic[]);
 void build_this_pic(char *filename, PIC *p);
 long get_file_len(FILE *fp);
-// void get_palette_from_bmp(char *filename, RGB palette[]);
-// void set_palette(RGB palette[]);
 void draw_picture(PIC p, int x, int y);
 void clear_picture(struct picture *p);
-// struct picture * build_mask_from_pic(struct picture *p);
 void destroy_pictures(void);
-// struct picture * create_picture(int w, int h);
 
 //paint function
 void draw_interface();
