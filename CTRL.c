@@ -28,7 +28,7 @@ void welcome_control()
 
 void help_control()
 {
-	if (key[NUM_3]) {
+	if (key[_ENTER]) {
 		interface = 0;
 		interface_changed = 1;
 	}
@@ -137,8 +137,8 @@ void bullet_flying()
 			bullet.status = 0;
 		}
 		bullet.x += bullet.xspeed;
-		bullet.yspeed = bullet.strenth * sin(PI * bullet.angle / 180.0) - GRAV * bullet.time;
-		bullet.y -= bullet.yspeed;
+		bullet.yspeed = bullet.strenth * sin(PI * bullet.angle / 180.0) + GRAV * bullet.time;
+		bullet.y += bullet.yspeed;
 		if (bullet.x < 0 || bullet.x >= 1023 || bullet.y <= 0 || bullet.y >= 767 || !map[bullet.x][bullet.y]) {
 			shooting = 0;
 			exploding = 1;
@@ -166,9 +166,10 @@ void cal_hurt()
 	int i, dist;
 
 	for (i = 0; i < 2; i++) {
-		dist = sqrt((bullet.x - player[i].x) * (bullet.x - player[i].x) + (bullet.y - player[i].y) * (bullet.y - player[i].y));
+		// dist = sqrt((bullet.x - player[i].x) * (bullet.x - player[i].x) + (bullet.y - player[i].y) * (bullet.y - player[i].y));
+		dist = (abs(bullet.x - player[i].x) + abs(bullet.y - player[i].y)) / 2;
 		if (dist < RAID) {
-			player[i].hp -= BASICHURT;
+			player[i].hp -= BASICHURT - dist;
 			if (player[i].hp <= 0) {
 				interface = 5 - i;
 				interface_changed = 1;

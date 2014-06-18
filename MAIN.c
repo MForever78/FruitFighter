@@ -62,6 +62,7 @@ int main()
 
         if (interface == 0) {
             welcome_control();
+            continue;
         }
 
         if (interface == 1) {

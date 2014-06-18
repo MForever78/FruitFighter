@@ -25,6 +25,7 @@ typedef struct _BULLET {
 #define NUM_2		3
 #define NUM_3		4
 #define _SPACE		0x39
+#define _ENTER		0x1c
 
 //game variables
 extern int stop;
@@ -48,7 +49,7 @@ extern PLAYER player[2];
 #define GRAV		1
 #define MAXSTRENTH	30
 #define RAID		20
-#define BASICHURT	50
+#define BASICHURT	100
 #define PLAYEROFFSET	300
 #define STATUSCOUNT 	50
 #define TDISTANCE		200
