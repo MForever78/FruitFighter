@@ -28,8 +28,8 @@ void welcome_control()
 
 void help_control()
 {
-	if (anykey) {
-		interface = 1;
+	if (key[NUM_3]) {
+		interface = 0;
 		interface_changed = 1;
 	}
 }
@@ -54,8 +54,7 @@ void round_move()
 		bullet.time = 0;
 		bullet.x = player[index].x;
 		bullet.y = player[index].y;
-		bullet.face = player[index].face;
-		bullet.xspeed = cos(bullet.angle) * bullet.strenth;
+		bullet.xspeed = cos(PI * bullet.angle / 180.0) * bullet.strenth;
 		return;
 	}
 
@@ -75,6 +74,7 @@ void round_move()
 				}
 			}
 		}
+		return;
 	}
 
 	if (key[_RIGHT]) {
@@ -93,28 +93,23 @@ void round_move()
 				}
 			}
 		}
+		return;
 	}
 
 	if (key[_DOWN]) {
-		bullet.count++;
-		if (bullet.count > STATUSCOUNT) {
-			bullet.count -= STATUSCOUNT;
-			bullet.angle++;
-			if (bullet.angle >= 360) {
-				bullet.angle -= 360;
-			}	
+		bullet.angle++;
+		if (bullet.angle >= 360) {
+			bullet.angle -= 360;
 		}
+		return;
 	}
 
 	if (key[_UP]) {
-		bullet.count++;
-		if (bullet.count > STATUSCOUNT) {
-			bullet.count -= STATUSCOUNT;
-			bullet.angle--;
-			if (bullet.angle < 0) {
-				bullet.angle += 360;
-			}	
+		bullet.angle--;
+		if (bullet.angle < 0) {
+			bullet.angle += 360;
 		}
+		return;
 	}
 
 	if (key[_SPACE]) {
@@ -122,6 +117,7 @@ void round_move()
 		if (bullet.strenth < MAXSTRENTH) {
 			bullet.strenth++;
 		}
+		return;
 	}
 
 }
@@ -129,15 +125,16 @@ void round_move()
 void bullet_flying()
 {
 	bullet.time++;
+	bullet.status++;
+	if (bullet.status > 11) {
+		bullet.status = 0;
+	}
 	bullet.x += bullet.xspeed;
-	bullet.yspeed = bullet.strenth * sin(bullet.angle) - GRAV * bullet.time;
+	bullet.yspeed = bullet.strenth * sin(PI * bullet.angle / 180.0) - GRAV * bullet.time;
 	bullet.y += bullet.yspeed;
 	if (!map[bullet.x][bullet.y]) {
 		shooting = 0;
 		exploding = 1;
-		bullet_explode();
-	} else {
-		draw_bullet();
 	}
 }
 
@@ -145,9 +142,10 @@ void bullet_explode()
 {
 	explode_state++;
 	draw_explode();
-	if (explode_state >= 24) {
+	if (explode_state >= 23) {
 		explode_state = 0;
 		exploding = 0;
+		init_round(!bout.playerNum);
 		cal_hurt();
 	}
 }
@@ -159,9 +157,11 @@ void cal_hurt()
 	for (i = 0; i < 2; i++) {
 		dist = sqrt((bullet.x - player[i].x) * (bullet.x - player[i].x) + (bullet.y - player[i].y) * (bullet.y - player[i].y));
 		if (dist < RAID) {
-			player[i].hp -= BASICHURT / dist / dist;
+			player[i].hp -= BASICHURT;
 			if (player[i].hp <= 0) {
 				interface = 5 - i;
+				interface_changed = 1;
+				break;
 			}
 		}
 	}
@@ -195,6 +195,7 @@ void init_round(int p)
 	bout.playerNum = p;			//player 1 first
 	bullet.strenth = 0;
 	bullet.angle = 0;
+	bullet.status = 0;
 }
 
 void init_time()

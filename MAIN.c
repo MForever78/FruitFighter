@@ -60,11 +60,21 @@ int main()
 
         if (interface == 0) {
             welcome_control();
-            continue;
         }
+
         if (interface == 1) {
             need_draw = 0;
             while (prev_update_time < game_time) {
+                if (shooting) {
+                    bullet_flying();
+                    prev_update_time++;
+                    continue;
+                }
+                if (exploding) {
+                    bullet_explode();
+                    prev_update_time++;
+                    continue;
+                }
                 round_move();
                 prev_update_time++;
                 need_draw = 1;
@@ -75,20 +85,18 @@ int main()
                 draw_players();
                 draw_target();
                 if (shooting){
-                    bullet_flying();
-                    continue;
+                    draw_bullet();
                 }
                 if (exploding){
                     bullet_explode();
-                    continue;
                 }
                 flip_display();
             }
-            continue;
         }
-        if (interface == 2) {
+
+        if (interface == 2 || interface == 3 || interface == 4 || interface == 5) {
+            new_game = 1;
             help_control();
-            continue;
         }
     }
 

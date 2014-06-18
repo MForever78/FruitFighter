@@ -43,7 +43,7 @@ void draw_this_player(int index)
 
 void draw_bullet()
 {
-	draw_picture(pic[BULLET0], bullet.x, bullet.y);
+	draw_picture(pic[BULLET0 + bullet.status], bullet.x - pic[BULLET0].img->picwidth / 2, bullet.y - pic[BULLET0].img->picheight / 2);
 }
 
 void draw_explode()
@@ -55,7 +55,7 @@ void draw_target()
 {
 	int x, y, index;
 	index = bout.playerNum;
-	x = player[index].x + cos(bullet.angle) * TDISTANCE;
-	y = player[index].y + sin(bullet.angle) * TDISTANCE;
+	x = player[index].x + cos(bullet.angle * PI / 180.0) * TDISTANCE;
+	y = player[index].y + sin(bullet.angle * PI / 180.0) * TDISTANCE;
 	draw_picture(pic[TARGET], x - pic[TARGET].img->picwidth / 2, y - pic[TARGET].img->picheight / 2);
 }

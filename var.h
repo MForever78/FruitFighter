@@ -17,7 +17,7 @@ typedef struct _BOUT {
 } BOUT;
 
 typedef struct _BULLET {
-	int x, y, xspeed, yspeed, angle, strenth, time, face, count;
+	int x, y, xspeed, yspeed, angle, strenth, time, face, count, status;
 } BULLET;
 
 //keyboard definition
@@ -43,13 +43,13 @@ extern PLAYER player[2];
 
 #define STILL		0
 #define MOVE 		1
-#define GRAV		5
-#define MAXSTRENTH	50
+#define GRAV		1
+#define MAXSTRENTH	10
 #define RAID		20
-#define BASICHURT	100
+#define BASICHURT	50
 #define PLAYEROFFSET	300
 #define STATUSCOUNT 	50
-#define TDISTANCE		100
+#define TDISTANCE		200
 
 
 //bmp variables
