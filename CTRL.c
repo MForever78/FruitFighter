@@ -61,6 +61,11 @@ void round_move()
 
 	if (key[_LEFT]) {
 		player[index].face = 0;
+		player[index].status_count++;
+		if (player[index].status_count > STATUSCOUNT) {
+			player[index].status_count -= STATUSCOUNT;
+			player[index].status = !player[index].status;
+		}
 		if (player[index].x > 0){
 			player[index].x--;
 			for (i = _height; i > 0; i--) {
@@ -74,6 +79,11 @@ void round_move()
 
 	if (key[_RIGHT]) {
 		player[index].face = 1;
+		player[index].status_count++;
+		if (player[index].status_count > STATUSCOUNT) {
+			player[index].status_count -= STATUSCOUNT;
+			player[index].status = !player[index].status;
+		}
 		if (player[index].x < _width - 1){
 			player[index].x++;
 			for (i = _height; i > 0; i--) {
@@ -85,17 +95,25 @@ void round_move()
 		}
 	}
 
-	if (key[_UP]) {
-		bullet.angle++;
-		if (bullet.angle >= 360) {
-			bullet.angle -= 360;
+	if (key[_DOWN]) {
+		bullet.count++;
+		if (bullet.count > STATUSCOUNT) {
+			bullet.count -= STATUSCOUNT;
+			bullet.angle++;
+			if (bullet.angle >= 360) {
+				bullet.angle -= 360;
+			}	
 		}
 	}
 
-	if (key[_DOWN]) {
-		bullet.angle--;
-		if (bullet.angle < 0) {
-			bullet.angle += 360;
+	if (key[_UP]) {
+		bullet.count++;
+		if (bullet.count > STATUSCOUNT) {
+			bullet.count -= STATUSCOUNT;
+			bullet.angle--;
+			if (bullet.angle < 0) {
+				bullet.angle += 360;
+			}	
 		}
 	}
 
@@ -127,7 +145,7 @@ void bullet_explode()
 {
 	explode_state++;
 	draw_explode();
-	if (explode_state >= 31) {
+	if (explode_state >= 24) {
 		explode_state = 0;
 		exploding = 0;
 		cal_hurt();
@@ -154,11 +172,13 @@ void init_player()
 {
 	int i, j;
 
-	player[1].x = _width / 2 - PLAYEROFFSET;
-	player[2].x = _width / 2 + PLAYEROFFSET;
+	player[0].x = _width / 2 - PLAYEROFFSET;
+	player[1].x = _width / 2 + PLAYEROFFSET;
 
 	for (i = 0; i < 2; i++) {
 		player[i].hp = 100;
+		player[i].status = 0;
+		player[i].status_count = 0;
 		player[i].face = 1 - i;		//0 is left, 1 is right
 		for (j = 0; j < _height; j++){
 			if (!map[player[i].x][j]) {
@@ -174,6 +194,7 @@ void init_round(int p)
 {
 	bout.playerNum = p;			//player 1 first
 	bullet.strenth = 0;
+	bullet.angle = 0;
 }
 
 void init_time()
