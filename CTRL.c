@@ -50,6 +50,7 @@ void round_move()
 
 	if (aiming && !key[_SPACE]) {
 		aiming = 0;
+		aiming_count = 0;
 		shooting = 1;
 		bullet.time = 0;
 		bullet.x = player[index].x;
@@ -114,34 +115,44 @@ void round_move()
 
 	if (key[_SPACE]) {
 		aiming = 1;
-		if (bullet.strenth < MAXSTRENTH) {
-			bullet.strenth++;
+		aiming_count++;
+		if (aiming_count > AIMCOUNT) {
+			aiming_count = 0;
+			if (bullet.strenth < MAXSTRENTH) {
+				bullet.strenth++;
+			}
+			return;
 		}
-		return;
 	}
-
 }
 
 void bullet_flying()
 {
-	bullet.time++;
-	bullet.status++;
-	if (bullet.status > 11) {
-		bullet.status = 0;
-	}
-	bullet.x += bullet.xspeed;
-	bullet.yspeed = bullet.strenth * sin(PI * bullet.angle / 180.0) - GRAV * bullet.time;
-	bullet.y += bullet.yspeed;
-	if (!map[bullet.x][bullet.y]) {
-		shooting = 0;
-		exploding = 1;
+	bullet.count++;
+	if (bullet.count >= BULLETCOUNT) {
+		bullet.count = 0;
+		bullet.time++;
+		bullet.status++;
+		if (bullet.status > 11) {
+			bullet.status = 0;
+		}
+		bullet.x += bullet.xspeed;
+		bullet.yspeed = bullet.strenth * sin(PI * bullet.angle / 180.0) - GRAV * bullet.time;
+		bullet.y -= bullet.yspeed;
+		if (bullet.x < 0 || bullet.x >= 1023 || bullet.y <= 0 || bullet.y >= 767 || !map[bullet.x][bullet.y]) {
+			shooting = 0;
+			exploding = 1;
+		}
 	}
 }
 
 void bullet_explode()
 {
-	explode_state++;
-	draw_explode();
+	explode_count++;
+	if (explode_count > EXPLODECOUNT) {
+		explode_count = 0;
+		explode_state++;
+	}
 	if (explode_state >= 23) {
 		explode_state = 0;
 		exploding = 0;

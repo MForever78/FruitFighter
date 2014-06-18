@@ -7,9 +7,11 @@ int interface_changed = 1;       //default changed in order to draw welcome inte
 int new_game = 1;                //default regard as a new game so that init functions can be trigered
 int map[1025][769];        //0:filled, 1:empty
 int aiming = 0;
+int aiming_count = 0;
 int shooting = 0;
 int exploding = 0;
 int explode_state = 0;
+int explode_count = 0;
 int need_draw = 0;
 BULLET bullet;
 BOUT bout;
@@ -68,11 +70,13 @@ int main()
                 if (shooting) {
                     bullet_flying();
                     prev_update_time++;
+                    need_draw = 1;
                     continue;
                 }
                 if (exploding) {
                     bullet_explode();
                     prev_update_time++;
+                    need_draw = 1;
                     continue;
                 }
                 round_move();
@@ -88,7 +92,7 @@ int main()
                     draw_bullet();
                 }
                 if (exploding){
-                    bullet_explode();
+                    draw_explode();
                 }
                 flip_display();
             }

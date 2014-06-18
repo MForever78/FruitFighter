@@ -33,9 +33,11 @@ extern int interface_changed;		//default changed in order to draw welcome interf
 extern int new_game;				//default regard as a new game so that init functions can be trigered
 extern int map[1025][769];		//1:filled, 0:empty
 extern int aiming;
+extern int aiming_count;
 extern int shooting;
 extern int exploding;
 extern int explode_state;
+extern int explode_count;
 extern int need_draw;
 extern BULLET bullet;
 extern BOUT bout;
@@ -44,12 +46,15 @@ extern PLAYER player[2];
 #define STILL		0
 #define MOVE 		1
 #define GRAV		1
-#define MAXSTRENTH	10
+#define MAXSTRENTH	30
 #define RAID		20
 #define BASICHURT	50
 #define PLAYEROFFSET	300
 #define STATUSCOUNT 	50
 #define TDISTANCE		200
+#define BULLETCOUNT		20
+#define AIMCOUNT		10
+#define EXPLODECOUNT	10
 
 
 //bmp variables
