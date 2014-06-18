@@ -5,7 +5,7 @@ int stop = 0;
 int interface = 0;               //default welcome interface
 int interface_changed = 1;       //default changed in order to draw welcome interface at the begining
 int new_game = 1;                //default regard as a new game so that init functions can be trigered
-int map[1025][769] = {1};        //1:filled, 0:empty
+int map[1025][769];        //0:filled, 1:empty
 int aiming = 0;
 int shooting = 0;
 int exploding = 0;
@@ -71,13 +71,11 @@ int main()
             }
             if (need_draw) { 
                 prepare_display();
-                draw_interface(1);
-                draw_player(0, STILL);
-                draw_player(1, STILL);
+                // draw_interface(1); 
+                draw_players();
+                draw_target();
                 if (shooting){
                     bullet_flying();
-                    // interface = 0;
-                    // interface_changed = 1;
                     continue;
                 }
                 if (exploding){

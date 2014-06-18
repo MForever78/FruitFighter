@@ -9,7 +9,7 @@
 
 //game struct
 typedef struct _PLAYER {
-	int x, y, hp, face;
+	int x, y, hp, face, status, status_count;
 } PLAYER;
 
 typedef struct _BOUT {
@@ -17,7 +17,7 @@ typedef struct _BOUT {
 } BOUT;
 
 typedef struct _BULLET {
-	int x, y, xspeed, yspeed, angle, strenth, time, face;
+	int x, y, xspeed, yspeed, angle, strenth, time, face, count;
 } BULLET;
 
 //keyboard definition
@@ -48,6 +48,8 @@ extern PLAYER player[2];
 #define RAID		20
 #define BASICHURT	100
 #define PLAYEROFFSET	300
+#define STATUSCOUNT 	50
+#define TDISTANCE		100
 
 
 //bmp variables
@@ -57,15 +59,54 @@ extern PIC pic[100];
 #define BGAME		1
 #define BMOUNT		2
 #define BULLET0		3
-#define CPAUSE		4
-#define DWIN1		5
-#define DWIN2		6
-#define EXPLO0		12
+#define BULLET1 	4
+#define BULLET2 	5
+#define BULLET3 	6
+#define BULLET4 	7
+#define BULLET5 	8
+#define BULLET6 	9
+#define BULLET7 	10
+#define BULLET8 	11
+#define BULLET9 	12
+#define BULLET10 	13
+#define BULLET11 	14
+#define BUMP1 		15
+#define BUMP2 		16
+#define BUMP3 		17
+#define BUMP4 		18
+#define BUMP5 		19
+#define BUMP6 		20
+#define BUMP7 		21
+#define BUMP8 		22
+#define BUMP9 		23
+#define BUMP10 		24
+#define BUMP11 		25
+#define BUMP12 		26
+#define BUMP13 		27
+#define BUMP14 		28
+#define BUMP15 		29
+#define BUMP16 		30
+#define BUMP17 		31
+#define BUMP18 		32
+#define BUMP19 		33
+#define BUMP20 		34
+#define BUMP21 		35
+#define BUMP22 		36
+#define BUMP23 		37
+#define BUMP24 		38
+#define PAUSE		39
+#define TARGET 		40
+#define WIN1		41
+#define WIN2		42
 #define HELP 		12
-#define WORM00		7
-#define WORM01 		8
-#define WORM10 		9
-#define WORM11		10
+#define WORM000		43
+#define WORM001 	44
+#define WORM010 	45
+#define WORM011 	46
+#define WORM100 	47
+#define	WORM101 	48
+#define WORM110 	49
+#define WORM111 	50
 
 
 //key variables
@@ -95,7 +136,9 @@ void destroy_pictures(void);
 void draw_interface();
 void draw_bullet();
 void draw_explode();
-void draw_player(int index, int moving);
+void draw_players();
+void draw_this_player(int index);
+void draw_target();
 
 //control function
 void welcome_control();
