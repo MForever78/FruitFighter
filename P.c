@@ -14,33 +14,30 @@ void draw_interface(int interface)
 			draw_picture(pic[HELP], 0, 0);
 			break;
 		case 3: //pause interface
-			draw_picture(pic[CPAUSE], 0, 0);
+			draw_picture(pic[PAUSE], 0, 0);
 			break;
 		case 4: //WIN1 interface
-			draw_picture(pic[DWIN1], 0, 0);
+			draw_picture(pic[WIN1], 0, 0);
 			break;
 		case 5: //WIN2 interface
-			draw_picture(pic[DWIN2], 0, 0);
+			draw_picture(pic[WIN2], 0, 0);
 			break;
 	}
 }
 
-void draw_player(int index, int moving)
+void draw_players()
+{
+	int i;
+	for (i = 0; i < 2; i++) {
+		draw_this_player(i);
+	}
+}
+
+void draw_this_player(int index)
 {
 	PIC worm;
-	if (index == 0) {
-		if (moving) {
-			worm = pic[WORM01];
-		} else {
-			worm = pic[WORM00];
-		}
-	} else {
-		if (moving) {
-			worm = pic[WORM11];
-		} else {
-			worm = pic[WORM10];
-		}
-	}
+	//make rules to judge worm's status
+	worm = pic[WORM000 + index * 4 + player[index].status * 2 + player[index].face];
 	draw_picture(worm, player[index].x - worm.mask->picwidth / 2, player[index].y - worm.mask->picheight);
 }
 
@@ -51,5 +48,14 @@ void draw_bullet()
 
 void draw_explode()
 {
-	draw_picture(pic[EXPLO0 + explode_state], bullet.x, bullet.y);	
+	draw_picture(pic[BUMP1 + explode_state], bullet.x, bullet.y);	
+}
+
+void draw_target()
+{
+	int x, y, index;
+	index = bout.playerNum;
+	x = player[index].x + cos(bullet.angle) * TDISTANCE;
+	y = player[index].y + sin(bullet.angle) * TDISTANCE;
+	draw_picture(pic[TARGET], x - pic[TARGET].img->picwidth / 2, y - pic[TARGET].img->picheight / 2);
 }
