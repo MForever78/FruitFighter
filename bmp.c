@@ -77,7 +77,7 @@ long get_file_len(FILE *fp)
 
 void draw_picture(PIC p, int x, int y)
 {
-   if(x<0 || y < 0 || x>=_width || y>=_height) return;
+   if(x<0 || y < 0 || x>=_width || y>=_height || x+p.img->picwidth > _width || y+p.img->picheight > _height) return;
    putimage(x, y, p.mask, OR_PUT);
    putimage(x, y, p.img, AND_PUT);
 }

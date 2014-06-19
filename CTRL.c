@@ -68,8 +68,8 @@ void round_move()
 		}
 		if (player[index].x > 0){
 			player[index].x--;
-			for (i = _height; i > 0; i--) {
-				if (map[player[index].x][i]) {
+			for (i = 0; i < _height; i++) {
+				if (!map[player[index].x][i]) {
 					player[index].y = i;
 					break;
 				}
@@ -87,8 +87,8 @@ void round_move()
 		}
 		if (player[index].x < _width - 1){
 			player[index].x++;
-			for (i = _height; i > 0; i--) {
-				if (map[player[index].x][i]) {
+			for (i = 0; i < _height; i++) {
+				if (!map[player[index].x][i]) {
 					player[index].y = i;
 					break;
 				}
@@ -219,9 +219,15 @@ void init_time()
 void build_map()
 {
 	PIC *p = &pic[BMOUNT];
-	int i, width, height;
+	int i, j, width, height;
 	long *color;
 	byte *q;
+
+	for (i = 0; i < _width; i++) {
+		for (j = 0; j < 310; j++) {
+			map[i][j] = 1;
+		}
+	}
 
 	q = &p->img->buffer;
 	for (i = 0; i < p->img->picwidth * p->img->picheight; i++) {
@@ -229,7 +235,7 @@ void build_map()
 		if ((*color & 0xFFFFFF00) == 0xFFFFFF00) {
 			height = i / p->img->picwidth;
 			width = i % p->img->picwidth;
-			map[width][height] = 1;
+			map[width][height + 310] = 1;
 		}
 		q += 3;
 	}

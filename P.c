@@ -7,8 +7,8 @@ void draw_interface(int interface)
 			draw_picture(pic[AWEL], 0, 0);
 			break;
 		case 1: //game interface
-			draw_picture(pic[BGAME], 0, 0);
-			draw_picture(pic[BMOUNT], 0, 0);
+			// draw_picture(pic[BGAME], 0, 0);
+			draw_picture(pic[BMOUNT], 0, 310);
 			break;
 		case 2: //help interface
 			draw_picture(pic[HELP], 0, 0);

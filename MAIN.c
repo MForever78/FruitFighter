@@ -86,7 +86,7 @@ int main()
             }
             if (need_draw) { 
                 prepare_display();
-                // draw_interface(1); 
+                draw_interface(1); 
                 draw_players();
                 draw_target();
                 if (shooting){
