@@ -34,6 +34,15 @@ void help_control()
 	}
 }
 
+void pause_control()
+{
+	if (key[_ENTER]) {
+		interface = 1;
+		interface_changed = 1;
+	}
+}
+
+
 void round_move()
 {
 	int i, index;
@@ -57,6 +66,12 @@ void round_move()
 		bullet.y = player[index].y;
 		bullet.xspeed = cos(PI * bullet.angle / 180.0) * bullet.strenth;
 		return;
+	}
+
+	if (key[_ENTER]) {
+		key[_ENTER] = 0;
+		interface = 3;
+		interface_changed = 1;
 	}
 
 	if (key[_LEFT]) {

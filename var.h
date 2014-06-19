@@ -100,19 +100,19 @@ extern PIC pic[100];
 #define BUMP22 		36
 #define BUMP23 		37
 #define BUMP24 		38
-#define PAUSE		39
-#define TARGET 		40
-#define WIN1		41
-#define WIN2		42
-#define HELP 		12
-#define WORM000		43
-#define WORM001 	44
-#define WORM010 	45
-#define WORM011 	46
-#define WORM100 	47
-#define	WORM101 	48
-#define WORM110 	49
-#define WORM111 	50
+#define HELP 		39
+#define PAUSE		40
+#define TARGET 		41
+#define WIN1		42
+#define WIN2		43
+#define WORM000		44
+#define WORM001 	45
+#define WORM010 	46
+#define WORM011 	47
+#define WORM100 	48
+#define	WORM101 	49
+#define WORM110 	50
+#define WORM111 	51
 
 
 //key variables
@@ -149,6 +149,7 @@ void draw_target();
 //control function
 void welcome_control();
 void help_control();
+void pause_control();
 void round_move();
 void bullet_flying();
 void bullet_explode();

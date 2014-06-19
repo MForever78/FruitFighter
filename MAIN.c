@@ -99,7 +99,11 @@ int main()
             }
         }
 
-        if (interface == 2 || interface == 3 || interface == 4 || interface == 5) {
+        if (interface == 3) {
+            pause_control();
+        }
+
+        if (interface == 2 || interface == 4 || interface == 5) {
             new_game = 1;
             help_control();
         }
